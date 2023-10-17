@@ -22,28 +22,19 @@ require_once("./functions.php");
 // }
 // end - test purpose
 
-$admin = isset($_SESSION['admin']) && $_SESSION['admin'] ;
+$admin_pass = md5(sha1("s7"));
+$admin = isset($_SESSION['admin']) && $_SESSION['admin'] && $_SESSION['admin'] == $admin_pass ;
 
-if (!$admin) {
-    require_once "page-login.php";
-    exit();
-}
 
 $user_id = 1;
 if(isset($_GET['page'])){
     $uri = explode("/",strtolower($_GET['page']));
     $page = $uri[0];
     isset($uri[1]) ? $path = $uri[1] : $path = NULL;
-    if($page == 'auth'){
-        !$user_id?require_once('./user-auth.php'):header("Location: /home");
-    }else if($page == 'home'){
-        $admin?($user_id?require_once('./page-home.php'):header("Location: /auth")):header("HTTP/1.0 403");
+    if($page == 'home'){
+        $admin?require_once('./page-home.php'):header("Location: /login");
     }else if($page == 'test'){
         require_once('./page-test.php');
-    }else if($page == 'tables'){
-        $admin?require_once('./page-list-table.php'):header("HTTP/1.0 403");
-    }else if($page == 'add-tables'){
-        $admin?require_once('./page-add-tables.php'):header("HTTP/1.0 403");
     }else if($page == 'groups'){
         $admin?require_once('./page-list-groups.php'):header("HTTP/1.0 403");
     }else if($page == 'items'){
@@ -54,8 +45,10 @@ if(isset($_GET['page'])){
         require_once('./page-settings.php');
     }else if($page == 'json'){
         require_once('./json-data.php');
-    }else if($page == 'devices'){
-        $admin?require_once('./page-list-devices.php'):header("HTTP/1.0 403");
+    }else if($page == 'login'){
+        require_once "page-login.php";
+    }else if($page == 'students'){
+        $admin?require_once('./page-list-students.php'):header("HTTP/1.0 403");
     }else if($page == 'add-event'){
         $admin?($user_id?require_once('./page-add-event.php'):header("Location: /auth")):header("HTTP/1.0 403");
     }else if($page == 'logout'){

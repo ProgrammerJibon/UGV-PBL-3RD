@@ -1,0 +1,16 @@
+[23-Sep-2023 23:28:17 Asia/Dhaka] PHP Fatal error:  Uncaught mysqli_sql_exception: SELECT command denied to user 'jibonpro_ugv'@'localhost' for table `epos_database`.`food_orders_list` in /home/jibonpro/ugv-pbl-3.jibon.pro/page-home.php:13
+Stack trace:
+#0 /home/jibonpro/ugv-pbl-3.jibon.pro/page-home.php(13): mysqli_query()
+#1 /home/jibonpro/ugv-pbl-3.jibon.pro/index.php(40): require_once('/home/jibonpro/...')
+#2 {main}
+  thrown in /home/jibonpro/ugv-pbl-3.jibon.pro/page-home.php on line 13
+[23-Sep-2023 23:31:50 Asia/Dhaka] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'root'@'localhost' (using password: NO) in /home/jibonpro/ugv-pbl-3.jibon.pro/functions.php:35
+Stack trace:
+#0 /home/jibonpro/ugv-pbl-3.jibon.pro/functions.php(35): mysqli_connect()
+#1 /home/jibonpro/ugv-pbl-3.jibon.pro/functions.php(10): connect()
+#2 /home/jibonpro/ugv-pbl-3.jibon.pro/index.php(2): require_once('/home/jibonpro/...')
+#3 {main}
+  thrown in /home/jibonpro/ugv-pbl-3.jibon.pro/functions.php on line 35
+[24-Sep-2023 00:55:56 Asia/Dhaka] PHP Warning:  Undefined array key "HTTP_USER_AGENT" in /home/jibonpro/ugv-pbl-3.jibon.pro/functions.php on line 17
+[24-Sep-2023 00:55:56 Asia/Dhaka] PHP Warning:  Undefined array key "HTTP_USER_AGENT" in /home/jibonpro/ugv-pbl-3.jibon.pro/functions.php on line 17
+[08-Oct-2023 21:52:14 Asia/Dhaka] PHP Warning:  Undefined array key "HTTP_USER_AGENT" in /home/jibonpro/ugv-pbl-3.jibon.pro/functions.php on line 17

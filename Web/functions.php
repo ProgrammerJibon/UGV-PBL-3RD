@@ -19,20 +19,12 @@ $website = $_SERVER['REQUEST_SCHEME']."://".$_SERVER['HTTP_HOST'];
 $current_url = urlencode($_SERVER['REQUEST_URI']);
 $user_id = 1;
 
-// function connect(){
-// 	$DB_HOST = "localhost";
-// 	$DB_USER = "root";
-// 	$DB_PASS = '';
-// 	$DB_NAME = "eticket";
-// 	$CONNECT = @mysqli_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
-// 	mysqli_set_charset($CONNECT,"utf8");
-// 	return $CONNECT;
-// }
 function connect(){
+	$localhost = true;
 	$DB_HOST = "localhost";
-    $DB_USER = "root";
-    $DB_PASS = "";
-    $DB_NAME = "jibonpro_ugv_pbl_3rd";
+	$DB_USER = $localhost?"root":"jibonpro_ugv";
+	$DB_PASS = $localhost?'':"FtjzhT2AjVPvJS5";
+	$DB_NAME = "jibonpro_ugv_pbl_3rd";
 	$CONNECT = @mysqli_connect($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 	mysqli_set_charset($CONNECT,"utf8");
 	return $CONNECT;
@@ -182,21 +174,9 @@ function info($admin = false){
 
 
 function addDatabaseAndTables($connect){
+	return true;
 	$connect == null?exit():null;
-	$sql = " CREATE TABLE IF NOT EXISTS `food_items` (`item_id` INT(255) NOT NULL AUTO_INCREMENT , `item_name` VARCHAR(1024) NOT NULL , `group_id` VARCHAR(255) NOT NULL,  `item_pic` VARCHAR(2048) NOT NULL, `item_price` VARCHAR(255) NOT NULL , PRIMARY KEY (`item_id`)) ENGINE = InnoDB; CREATE TABLE IF NOT EXISTS `food_group` (`group_id` INT(255) NOT NULL AUTO_INCREMENT , `group_name` VARCHAR(1024) NOT NULL , PRIMARY KEY (`group_id`)) ENGINE = InnoDB; CREATE TABLE  IF NOT EXISTS `info` (`id` INT(255) NOT NULL AUTO_INCREMENT , `name` VARCHAR(1024) NOT NULL , `value` LONGTEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;CREATE TABLE IF NOT EXISTS `table_list` (`table_id` INT(255) NOT NULL AUTO_INCREMENT , `table_name` VARCHAR(1024) NOT NULL , PRIMARY KEY (`table_id`)) ENGINE = InnoDB;CREATE TABLE IF NOT EXISTS `food_orders_item` (`order_item_id` INT(255) NOT NULL AUTO_INCREMENT , `order_id` VARCHAR(255) NOT NULL , `item_quantity` VARCHAR(255) NOT NULL , `name_then` VARCHAR(1024) NOT NULL , `price_then` VARCHAR(1024) NOT NULL ,`printed` VARCHAR(16) NOT NULL DEFAULT 'false' COMMENT 'true/false' ,PRIMARY KEY (`order_item_id`)) ENGINE = InnoDB; INSERT IGNORE INTO `info` (`id`, `name`, `value`) VALUES (1, '".base64_decode('dGl0bGU=')."', 'UGV Cafeteria Order Manager');"."CREATE TABLE IF NOT EXISTS `devices` (`id` INT(255) NOT NULL AUTO_INCREMENT , `code` VARCHAR(1024) NOT NULL COMMENT 'code where can device connect' , `time` VARCHAR(1024) NOT NULL COMMENT 'device adding time' , `removed_time` VARCHAR(1024) NOT NULL COMMENT 'device removed time' , `username` VARCHAR(1024) NOT NULL COMMENT 'name to identify on admin panel' , `status` VARCHAR(1024) NOT NULL COMMENT 'active: device connected \r\nremoved: device removed\r\ninactive: device isn\'t connected yet' , PRIMARY KEY (`id`)) ENGINE = InnoDB;"."CREATE TABLE IF NOT EXISTS `food_orders_list` (
-		`order_id` int(255) NOT NULL AUTO_INCREMENT,
-		`customer_name` varchar(1024) NOT NULL,
-		`customer_phone` varchar(1024) NOT NULL,
-		`order_taker_name` varchar(1024) NOT NULL,
-		`status` varchar(1024) NOT NULL DEFAULT 'OPEN' COMMENT 'OPEN : order is not finished yet\r\nCLOSED : same as it''s mean for',
-		`table_id` varchar(1024) NOT NULL,
-		`order_time` varchar(1024) NOT NULL DEFAULT 0,
-		`billed_time` varchar(1024) NOT NULL DEFAULT 0,
-		`paid_time` varchar(1024) NOT NULL DEFAULT 0,
-		`vat_when_booked` int(255) NOT NULL,
-		`total_when_booked` int(255) NOT NULL COMMENT 'without vat',
-		PRIMARY KEY (`order_id`)
-	  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;INSERT IGNORE INTO  `info` (`id`, `name`, `value`) VALUES (2, 'vat', '25');INSERT IGNORE INTO  `info` (`id`, `name`, `value`) VALUES (3, '4e3b9acd4385b58c539b70445301f400', '');";
+	$sql = "";
 	if (@mysqli_multi_query($connect, $sql)) {
 		do {
 			if ($result = mysqli_store_result($connect)) {
@@ -212,29 +192,6 @@ function addDatabaseAndTables($connect){
 
 
 
-function tableList($table_id = null){
-	$result = array();
-	global $connect, $info;
-	$extras = $table_id != null?"WHERE `table_id` = '$table_id'":"";
-	$sql = "SELECT * FROM `table_list` $extras ORDER BY `table_list`.`table_id` DESC";
-	$query = @mysqli_query($connect, $sql);
-	if($query){
-		foreach($query as $details){
-			if ($tableStatus = @mysqli_query($connect, "SELECT * FROM `food_orders_list` WHERE `status` LIKE 'OPEN' AND `table_id` LIKE '$details[table_id]'")) {
-				foreach ($tableStatus as $key) {
-					$key['order_time'] = date("Y/m/d h:iA", $key['order_time']);
-					$key['vat'] = $info['vat'];
-					$details['current_status'] = $key;
-				}
-			}
-			$result[] = $details;
-		}
-	}else{
-		return false;
-	}
-		
-	return $result;
-}
 
 function groupList($groupID = null){
 	$result = array();
@@ -270,19 +227,18 @@ function food_orders_item($order_id){
 	return $result;
 }
 
-function devicesList($code = null){
+function studentsList($code = null){
 	$result = array();
 	global $connect;
-	 $sql = $code != null ?"SELECT * FROM `devices` WHERE  `devices`.`code` = '$code' ORDER BY `devices`.`status` DESC LIMIT 1":"SELECT * FROM `devices` ORDER BY `devices`.`status` ASC";
+	 $sql = $code != null ?"SELECT * FROM `students` WHERE  `students`.`code` = '$code' ORDER BY `students`.`status` DESC LIMIT 1":"SELECT * FROM `students` ORDER BY `students`.`status` ASC";
 	$query = @mysqli_query($connect, $sql);
 	if($query){
 		foreach($query as $details){
 			$details['check_code'] = $code?$details['code']:null;
-			$details['username'] = preg_replace("/[^a-z0-9]/", "",strtolower($details['username']));
 			($details['status'] != "INACTIVE")?$details['code']=substr($details['code'], 0, 2)."****".substr($details['code'], 6, 2):null;
 			$details['code'] = substr($details['code'], 0, 4)." ".substr($details['code'], 4, 4).substr($details['code'], 8);
-			$details['time'] = ($details['time'] && ($details['status'] == 'ACTIVE' || $details['status'] == "REMOVED"))?date("Y/m/d h:iA", $details['time']):"Not Connected Yet";
-			$details['removed_time'] = date("Y/m/d h:iA", $details['removed_time']);
+			$details['time'] = ($details['time'] > 0 && ($details['status'] == 'ACTIVE' || $details['status'] == "REMOVED"))?date("Y/m/d h:iA", $details['time']):"Not Connected Yet";
+			$details['removed_time'] = $details['removed_time'] > 0?date("Y/m/d h:iA", $details['removed_time']):"N/A";
 			$result[] = $details;
 		}
 	}else{
@@ -347,21 +303,15 @@ function showOrdersContainer($query, $wname = false){
 
         $echo .= "\n\n<div class='ordersListItem'>";
         $items_ordered = food_orders_item($key['order_id']);
-        $tables = tableList($key['table_id']);
         $key['order_time'] = date("Y/m/d h:iA", $key['order_time']);
         $key['billed_time'] = $key['billed_time'] > 0 ? date("Y/m/d h:iA", $key['billed_time']):"OPEN";
 
         $echo .= "\n<div class='order_id'><span class='name'>Order ID</span>:<span class='value'>$key[order_id]</span></div>";
+   
 
-        foreach($tables as $table){
-            $echo .= "\n<div class='table_id'><span class='name'>Table</span>:<span class='value'>$table[table_name] ($table[table_id])</span></div>";
-        }        
+        $echo .= "\n<div class='customer_name'><span class='name'>Student Name</span>:<span class='value'>$key[customer_name]</span></div>";
 
-        $echo .= "\n<div class='customer_name'><span class='name'>Customer Name</span>:<span class='value'>$key[customer_name]</span></div>";
-
-        $echo .= "\n<div class='customer_phone'><span class='name'>Customer Phone Number</span>:<span class='value'>$key[customer_phone]</span></div>";
-
-        $echo .= "\n<div class='order_taker_name'><span class='name'>Served by</span>:<span class='value'>$key[order_taker_name]</span></div>";
+        $echo .= "\n<div class='customer_phone'><span class='name'>Student ID</span>:<span class='value'>$key[customer_phone]</span></div>";
 
         $echo .= "\n<div class='order_time'><span class='name'>Open Time</span>:<span class='value'>$key[order_time]</span></div>";
 
@@ -407,4 +357,14 @@ function showOrdersContainer($query, $wname = false){
 	// }
 
     return $echo;
+}
+
+
+
+function removeExtraSpaces($text) {
+    return preg_replace('/\s+/', ' ', $text);
+}
+
+function removeSpaces($text) {
+    return preg_replace('/\s+/', '', $text);
 }

@@ -1,5 +1,5 @@
 <?php
-
+header("Refresh: 3");
 require_once('./html-header.php');
 ?>
 <title><?php echo $info['title']; ?> - Current Order List</title>

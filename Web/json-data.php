@@ -5,11 +5,8 @@ $result = array();
 $result['foo'] = "bar";
 
 
-if (isset($_POST['tablesList'])) {
-    $result['tablesList'] = tableList();
-}
-if (isset($_POST['devicesList'])) {
-    $result['devicesList'] = devicesList();
+if (isset($_POST['studentsList'])) {
+    $result['studentsList'] = studentsList();
 }
 if (isset($_REQUEST['groupList'])) {
     $result['groupList'] = groupList();
@@ -47,7 +44,7 @@ if (isset($_POST['deleteItem'])) {
 }
 
 if (isset($_POST['removeDevice'])) {
-    if(@mysqli_query($connect, "UPDATE `devices` SET `removed_time` = '$time', `status` = 'REMOVED' WHERE `devices`.`id` = '".addslashes($_POST['removeDevice'])."'")){
+    if(@mysqli_query($connect, "UPDATE `students` SET `removed_time` = '$time', `status` = 'REMOVED' WHERE `students`.`id` = '".addslashes($_POST['removeDevice'])."'")){
         $result['removeDevice'] = true;
     }else{
         $result['removeDevice'] = false;
@@ -59,13 +56,13 @@ if (isset($uri[1]) && strtolower($uri[1]) == 'app') {
     $result['connectionUsername'] = "";
     if (isset($_GET['connectorCode'])) {
         $connectorCode = addslashes($_GET['connectorCode']);
-        $resultConnection = devicesList($connectorCode);
+        $resultConnection = studentsList($connectorCode);
         if (isset($resultConnection[0])) {
             $resultConnection = $resultConnection[0];
             if(isset($resultConnection['status']) && isset($resultConnection['check_code']) && preg_replace("/[^0-9]/", "", $resultConnection['check_code']) == $connectorCode){
                 $result['connectionUsername'] = $resultConnection['username'];
                 if ($resultConnection['status'] == "INACTIVE") {
-                    if (@mysqli_query($connect, "UPDATE `devices` SET `time` = '$time', `status` = 'ACTIVE' WHERE `devices`.`id` = '".$resultConnection['id']."'")) {
+                    if (@mysqli_query($connect, "UPDATE `students` SET `time` = '$time', `status` = 'ACTIVE' WHERE `students`.`id` = '".$resultConnection['id']."'")) {
                         $result['connectionResult'] = true;
                     }
                 }elseif ($resultConnection['status'] == "ACTIVE") {
@@ -73,9 +70,6 @@ if (isset($uri[1]) && strtolower($uri[1]) == 'app') {
                 }
             }
         }
-    }
-    if (isset($_GET['lists'])) {
-        $_GET['lists']=="tables"?($result['lists_table'] = $result['connectionResult']?tableList():array()):null;
     }
     if (isset($_GET['removeOrderedItem'])) {
         $removeOrderedItem = addslashes($_GET['removeOrderedItem']);

@@ -8,13 +8,13 @@ require_once('./html-header.php');
     <button type="submit">Search</button>
 </form>
 <form action="" method="POST" class="search-in-orders">
-    <select name="waiter" class="" required onchange="this.parentNode.submit()">
-        <option value="" selected>All Waiter</option>
+    <select name="student" class="" required onchange="this.parentNode.submit()">
+        <option value="" selected>All student</option>
         <?php
-            $waiter_list = devicesList();
-            foreach ($waiter_list as $key) {
-                $selected = isset($_POST['waiter']) && ($_POST['waiter'] == $key['username']) ? "selected":"";
-                echo "<option $selected value='$key[username]'>$key[username]</option>";
+            $student_list = studentsList();
+            foreach ($student_list as $key) {
+                $selected = isset($_POST['student']) && ($_POST['student'] == $key['username']) ? "selected":"";
+                echo "<option $selected value='$key[id]'>$key[student_id] - $key[student_name]</option>";
             }
         ?>
     </select>
@@ -22,11 +22,11 @@ require_once('./html-header.php');
 <?php
 $time_before = $time - (86400*1);
 $search = "(`order_time` BETWEEN '0' AND '$time_before') OR (`status` = 'CLOSED')";
-if(isset($_POST['waiter']) && $_POST['waiter'] == ""){
-    unset($_POST['waiter']);
+if(isset($_POST['student']) && $_POST['student'] == ""){
+    unset($_POST['student']);
 }
-if(isset($_POST['waiter'])){
-    $ss = addslashes(strip_tags(strtolower($_POST['waiter'])));
+if(isset($_POST['student'])){
+    $ss = addslashes(strip_tags(strtolower($_POST['student'])));
     $search = "(`order_taker_name` = '$ss')";
 }else if (isset($_POST['search']) && $_POST['search'] != "") {
     $ss = addslashes(strip_tags(strtolower($_POST['search'])));
@@ -39,7 +39,7 @@ if ($query = @mysqli_query($connect, $sql)) {
     if(mysqli_num_rows($query) > 0){
         echo isset($_POST['search'])?"<div class='pageTitle'>Search result for ".$_POST['search']."</div>": "<div class='pageTitle'>100 orders of before 24 hours</div>";
     }
-    echo showOrdersContainer($query, isset($_POST['waiter']));
+    echo showOrdersContainer($query, isset($_POST['student']));
 }
 ?>
 

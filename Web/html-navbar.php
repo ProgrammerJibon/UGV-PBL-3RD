@@ -15,12 +15,12 @@
             <a data-href="/order-history" class="nav-item">
                 <span>Order History</span>
             </a>
-            <a data-href="/devices" class="nav-item">
-                <span>Devices</span>
+            <a data-href="/students" class="nav-item">
+                <span>Students</span>
             </a>
-            <a data-href="/tables" class="nav-item">
+            <!-- <a data-href="/tables" class="nav-item">
                 <span>Tables</span>
-            </a>
+            </a> -->
             <a data-href="/groups" class="nav-item">
                 <span>Item Groups</span>
             </a>
