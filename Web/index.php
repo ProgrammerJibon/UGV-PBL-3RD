@@ -22,8 +22,7 @@ require_once("./functions.php");
 // }
 // end - test purpose
 
-$admin_pass = md5(sha1("s7"));
-$admin = isset($_SESSION['admin']) && $_SESSION['admin'] && $_SESSION['admin'] == $admin_pass ;
+
 
 
 $user_id = 1;

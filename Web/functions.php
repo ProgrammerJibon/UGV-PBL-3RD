@@ -19,6 +19,9 @@ $website = $_SERVER['REQUEST_SCHEME']."://".$_SERVER['HTTP_HOST'];
 $current_url = urlencode($_SERVER['REQUEST_URI']);
 $user_id = 1;
 
+$admin_pass = md5(sha1("s7"));
+$admin = isset($_SESSION['admin']) && $_SESSION['admin'] && $_SESSION['admin'] == $admin_pass ;
+
 function connect(){
 	$localhost = true;
 	$DB_HOST = "localhost";
@@ -227,16 +230,16 @@ function food_orders_item($order_id){
 	return $result;
 }
 
-function studentsList($code = null){
+function studentsList($student_id = null){
 	$result = array();
 	global $connect;
-	 $sql = $code != null ?"SELECT * FROM `students` WHERE  `students`.`code` = '$code' ORDER BY `students`.`status` DESC LIMIT 1":"SELECT * FROM `students` ORDER BY `students`.`status` ASC";
+	 $sql = $student_id != null ?"SELECT * FROM `students` WHERE  `students`.`student_id` = '$student_id' ORDER BY `students`.`status` DESC LIMIT 1":"SELECT * FROM `students` ORDER BY `students`.`status` ASC";
 	$query = @mysqli_query($connect, $sql);
 	if($query){
 		foreach($query as $details){
-			$details['check_code'] = $code?$details['code']:null;
-			($details['status'] != "INACTIVE")?$details['code']=substr($details['code'], 0, 2)."****".substr($details['code'], 6, 2):null;
-			$details['code'] = substr($details['code'], 0, 4)." ".substr($details['code'], 4, 4).substr($details['code'], 8);
+			$details['check_code'] = $student_id?$details['code']:null;
+			($details['status'] != "INACTIVE")?$details['code']=substr($details['code'], 0, 2)."••••".substr($details['code'], 6, 2):null;
+			//$details['code'] = substr($details['code'], 0, 4)." ".substr($details['code'], 4, 4).substr($details['code'], 8);
 			$details['time'] = ($details['time'] > 0 && ($details['status'] == 'ACTIVE' || $details['status'] == "REMOVED"))?date("Y/m/d h:iA", $details['time']):"Not Connected Yet";
 			$details['removed_time'] = $details['removed_time'] > 0?date("Y/m/d h:iA", $details['removed_time']):"N/A";
 			$result[] = $details;
@@ -285,22 +288,18 @@ function showOrdersContainer($query, $wname = false){
 
 		$last_date_price == ""?$last_date_price = $new_date:null;
 
+		$student = studentsList($key["student_id"])[0];
+
 		if ($last_date_price != $new_date && $wname) {
 			$echo .= "<div class='new_price'>Total Billed: <span>&#2547;$last_price</span></div>";
 			$last_date_price = $new_date;
 			$last_price = 0;
 		}
-		$last_price += $key['total_when_booked'];
-
-		
+		$last_price += $key['total_when_booked'];		
 		if($last_date != $new_date && $wname){
 			$echo .= "<div class='new_date'>$new_date</div>";
 			$last_date = $new_date;
 		}
-
-
-
-
         $echo .= "\n\n<div class='ordersListItem'>";
         $items_ordered = food_orders_item($key['order_id']);
         $key['order_time'] = date("Y/m/d h:iA", $key['order_time']);
@@ -309,9 +308,9 @@ function showOrdersContainer($query, $wname = false){
         $echo .= "\n<div class='order_id'><span class='name'>Order ID</span>:<span class='value'>$key[order_id]</span></div>";
    
 
-        $echo .= "\n<div class='customer_name'><span class='name'>Student Name</span>:<span class='value'>$key[customer_name]</span></div>";
+        $echo .= "\n<div class='customer_name'><span class='name'>Student Name</span>:<span class='value'>$student[student_name]</span></div>";
 
-        $echo .= "\n<div class='customer_phone'><span class='name'>Student ID</span>:<span class='value'>$key[customer_phone]</span></div>";
+        $echo .= "\n<div class='customer_phone'><span class='name'>Student ID</span>:<span class='value'>$student[student_id]</span></div>";
 
         $echo .= "\n<div class='order_time'><span class='name'>Open Time</span>:<span class='value'>$key[order_time]</span></div>";
 
@@ -325,6 +324,7 @@ function showOrdersContainer($query, $wname = false){
                                 <th>Per Item Price</th>
                                 <th>Quantity</th>
                                 <th>Total Price</th>
+                                <th>Remove</th>
                             </tr>
                         </thead><tbody>':"";
         foreach ($items_ordered as $data) {
@@ -333,6 +333,7 @@ function showOrdersContainer($query, $wname = false){
             $echo .= "\n<td>".$data['price_then']."</td>";
             $echo .= "\n<td>".$data['item_quantity']."</td>";
             $echo .= "\n<td>".($data['price_then'] * $data['item_quantity'])."</td>";
+            $echo .= $key['status']=="OPEN"?"\n<td><a href='/json?removeOrderedItem=".$data['order_item_id']."'><font color='red'>X</font></a></td>":"<td></td>";
             $echo .= "\n</tr>";
         }
 
