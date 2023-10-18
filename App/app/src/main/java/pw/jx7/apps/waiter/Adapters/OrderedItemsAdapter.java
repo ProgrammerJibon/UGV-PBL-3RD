@@ -46,34 +46,16 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
             JSONObject item = userList.getJSONObject(position);
             holder.itemSL.setText(String.valueOf(position+1));
             holder.itemName.setText(item.getString("name_then"));
-            if (!item.getBoolean("printed")){
-                holder.itemName.setTextColor(Color.RED);
-            }else{
-                holder.itemName.setTextColor(Color.GRAY);
-            }
+//            if (!item.getBoolean("printed")){
+//                holder.itemName.setTextColor(Color.RED);
+//            }else{
+//                holder.itemName.setTextColor(Color.GRAY);
+//            }
             holder.itemQuantity.setText(item.getString("item_quantity"));
             holder.itemPrice.setText(item.getString("price_then"));
             float TOTAL = Float.parseFloat(item.getString("item_quantity")) * Float.parseFloat(item.getString("price_then"));
             holder.itemTotal.setText(String.format("%.2f",TOTAL));
-            holder.removeItemBtn.setOnClickListener(v -> {
-                try {
-                    String connectorCode = customTools.setPref("connectorCode", null);
-                    String url = CustomTools.url("json/app") + "?connectorCode=" + connectorCode + "&removeOrderedItem=" + item.getString("order_item_id");
-                    Internet2 internet2 = new Internet2(activity, url, ((code, result) -> {
-                        try {
-                            if (result.has("removeOrderedItem")) {
-                                if (result.getBoolean("removeOrderedItem")){
-                                    userList.remove(position);
-                                    notifyDataSetChanged();
-                                }
-                            }
-                        } catch (Exception error) {
-                            Log.e("errnos", error.getMessage());
-                        }
-                    }));
-                    internet2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                }catch (Exception ignored){}
-            });
+
         }catch (Exception e ){
             Log.e("errnos", e.getMessage());
         }
@@ -100,8 +82,6 @@ public class OrderedItemsAdapter extends RecyclerView.Adapter<OrderedItemsAdapte
             itemQuantity = view.findViewById(R.id.itemQuantity);
             itemPrice = view.findViewById(R.id.itemPrice);
             itemTotal = view.findViewById(R.id.itemTotal);
-            removeItemBtn = view.findViewById(R.id.removeItemBtn);
-            removeItemBtn.getLayoutParams().height = 100;
         }
     }
 }

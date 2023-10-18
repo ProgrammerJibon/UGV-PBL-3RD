@@ -30,68 +30,14 @@
             android:layout_height="wrap_content"
             android:text="Not Booked Yet"
             android:gravity="center"
-            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/actionButtonBook"
             />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_above="@+id/actionButtonBook"
             android:layout_height="match_parent">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="16dp"
-                android:paddingBottom="200dp"
-                >
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Enter customer name: "
-                    android:layout_marginTop="16dp"
-                    android:textColor="@color/gray"
-                    />
-                <EditText
-                    android:id="@+id/customerName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:inputType="textPersonName"
-                    android:background="@drawable/edittext_style_bg"
-                    android:hint="Full Name"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Enter customer number: "
-                    android:layout_marginTop="16dp"
-                    android:textColor="@color/gray"
-                    />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edittext_style_bg">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:textSize="16dp"
-                        android:paddingStart="16dp"
-                        android:textColor="@color/deep_pink"
-                        android:text="+8801"/>
-                    <EditText
-                        android:id="@+id/customerPhone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingVertical="16dp"
-                        android:textSize="16dp"
-                        android:inputType="phone"
-                        android:textColor="@color/deep_pink"
-                        android:maxLength="9"
-                        android:paddingEnd="16dp"
-                        android:backgroundTint="@color/transparent"/>
-                </LinearLayout>
-            </LinearLayout>
         </ScrollView>
 
         <LinearLayout
@@ -105,7 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="@string/book_table"
+                android:text="Open Table"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginVertical="16dp"
                 android:foreground="?selectableItemBackground"
@@ -145,27 +91,6 @@
                     android:paddingVertical="8dp"
                     android:text="Booking Time: "
                     android:id="@+id/bookingTime"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp"
-                    android:text="Customer Name: "
-                    android:id="@+id/customerNameTextView"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp"
-                    android:text="Customer Number: "
-                    android:id="@+id/customerPhoneTextView"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp"
-                    android:text="Serving By: "
-                    android:id="@+id/servedByTextView"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -220,74 +145,8 @@
                         android:textColor="@color/deep_pink"
                         android:id="@+id/itemOnlyTotal"
                         android:text="0.00"/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text=""/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp"
-                    android:visibility="gone"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.725"
-                        android:text=""/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:text=""/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textStyle="bold"
-                        android:text="Tax"/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:id="@+id/orderTaxPercentage"
-                        android:text="0%"/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:gravity="right"
-                        android:id="@+id/totalVat"
-                        android:text="0.00"/>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="In Total"
-                        android:textStyle="bold"
-                        android:textSize="18dp"
-                        android:padding="16dp"
-                        android:textColor="@color/gray"/>
-                    <TextView
-                        android:id="@+id/inTotalPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0.00"
-                        android:textStyle="bold"
-                        android:textSize="18dp"
-                        android:padding="16dp"
-                        android:textColor="@color/deep_pink"/>
-                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

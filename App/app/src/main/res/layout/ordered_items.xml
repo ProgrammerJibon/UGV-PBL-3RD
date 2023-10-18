@@ -36,18 +36,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
-        android:gravity="right"
+        android:gravity="center"
         android:id="@+id/itemTotal"
         android:text="Total"/>
-    <ImageView
-        android:id="@+id/removeItemBtn"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:src="@drawable/baseline_close_24"
-        android:tint="@color/deep_pink"
-        android:paddingVertical="8dp"
-        android:foreground="?selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_height="0px"/>
 </LinearLayout>

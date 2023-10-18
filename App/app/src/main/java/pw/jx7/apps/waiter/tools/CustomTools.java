@@ -95,6 +95,7 @@ public class CustomTools {
     }
 
 
+
     public static Bitmap scaleDownBitmap(Bitmap bitmap, int newWidth) {
         int originalWidth = bitmap.getWidth();
         int originalHeight = bitmap.getHeight();
