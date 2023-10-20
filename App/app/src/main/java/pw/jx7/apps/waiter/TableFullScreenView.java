@@ -41,7 +41,7 @@ import pw.jx7.apps.waiter.tools.Internet3;
 public class TableFullScreenView extends AppCompatActivity {
     public Activity activity;
     public Button openTableButton, closeTableButton, addItemTableButton, printItemsButton;
-    public String student_id, student_code, order_id,  order_time;
+    public String student_phone, student_password, order_id,  order_time;
     protected TextView pageTitle, orderIDTextShow, bookingTime, itemOnlyTotal;
     private CustomTools customTools;
     protected RelativeLayout bookTableView, openTableView;
@@ -55,8 +55,8 @@ public class TableFullScreenView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         activity = this;
         customTools = new CustomTools(activity);
-        student_code = customTools.setPref("studentCode", null);
-        student_id = customTools.setPref("studentId", null);
+        student_password = customTools.setPref("student_password", null);
+        student_phone = customTools.setPref("student_phone", null);
         setContentView(R.layout.activity_table_full_screen_view);
 
         // find view by id
@@ -100,8 +100,8 @@ public class TableFullScreenView extends AppCompatActivity {
 
     private void syncTableStatus(){
         Map<String, String> stringMap = new HashMap<>();
-        stringMap.put("student_id", student_id);
-        stringMap.put("student_code", student_code);
+        stringMap.put("student_phone", student_phone);
+        stringMap.put("student_password", student_password);
         stringMap.put("syncTable", "1");
         Internet3 internet3 = new Internet3(activity, CustomTools.url("json/app"), stringMap, ((code, result) -> {
             try {
@@ -130,8 +130,8 @@ public class TableFullScreenView extends AppCompatActivity {
 
     private void openTableButtonClicked() {
         Map<String, String> stringMap = new HashMap<>();
-        stringMap.put("student_id", student_id);
-        stringMap.put("student_code", student_code);
+        stringMap.put("student_phone", student_phone);
+        stringMap.put("student_password", student_password);
         stringMap.put("book_table", "1");
         Internet3 internet3 = new Internet3(activity, CustomTools.url("json/app"), stringMap, ((code, result) -> {
             try {
@@ -163,8 +163,8 @@ public class TableFullScreenView extends AppCompatActivity {
         addItemTableButton.setVisibility(View.GONE);
         printItemsButton.setVisibility(View.GONE);
         Map<String, String> stringMap = new HashMap<>();
-        stringMap.put("student_id", student_id);
-        stringMap.put("student_code", student_code);
+        stringMap.put("student_phone", student_phone);
+        stringMap.put("student_password", student_password);
         stringMap.put("tableClosed", order_id);
         Internet3 internet3 = new Internet3(activity, CustomTools.url("json/app"), stringMap, ((code, result) -> {
             try {
@@ -197,8 +197,8 @@ public class TableFullScreenView extends AppCompatActivity {
     public void load_ordered_items(){
         if (order_id != null){
             Map<String, String> stringMap = new HashMap<>();
-            stringMap.put("student_id", student_id);
-            stringMap.put("student_code", student_code);
+            stringMap.put("student_phone", student_phone);
+            stringMap.put("student_password", student_password);
             stringMap.put("ordered_items", order_id);
             Internet3 internet3 = new Internet3(activity, CustomTools.url("json/app"), stringMap, ((code, result) -> {
                 try {

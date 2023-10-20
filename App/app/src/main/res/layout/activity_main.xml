@@ -38,42 +38,55 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Enter student id: "
+                android:text="Enter mobile number: "
                 android:layout_marginTop="8dp"
                 android:textColor="@color/gray"
                 />
-
-            <EditText
-                android:id="@+id/studentID"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:padding="18dp"
-                android:textColor="@color/deep_pink"
-                android:textColorHint="@color/gray"
                 android:background="@drawable/edittext_style_bg"
-                android:layout_marginVertical="8dp"
-                android:hint="12311000" />
+                android:layout_marginVertical="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+880"
+                    android:paddingStart="18dp"
+                    android:textSize="16dp"
+                    android:textColor="@color/deep_pink"/>
+                <EditText
+                    android:id="@+id/student_phone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textSize="16dp"
+                    android:paddingVertical="18dp"
+                    android:maxLength="10"
+                    android:textColor="@color/deep_pink"
+                    android:background="@color/transparent"
+                    android:textColorHint="@color/gray"
+                    android:hint="160030XXX0"/>
+
+            </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Enter Code: "
+                android:text="Enter password: "
                 android:layout_marginTop="8dp"
                 android:textColor="@color/gray"
                 />
 
             <EditText
-                android:id="@+id/studentCode"
+                android:id="@+id/student_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="textPassword"
                 android:padding="18dp"
-                android:maxLength="8"
                 android:background="@drawable/edittext_style_bg"
                 android:textColor="@color/deep_pink"
                 android:textColorHint="@color/gray"
                 android:layout_marginVertical="8dp"
-                android:hint="1234 5678" />
+                android:hint="Enter password" />
             <Button
                 android:id="@+id/connectBtn"
                 android:layout_width="match_parent"
@@ -83,7 +96,7 @@
                 android:background="@drawable/edittext_style_bg"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/deep_pink"
-                android:text="Connect"/>
+                android:text="Login"/>
         </LinearLayout>
     </ScrollView>
 

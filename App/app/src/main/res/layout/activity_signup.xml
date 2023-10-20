@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".SignupActivity"
+    tools:ignore="all">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/adLayout"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="32dp"
+            android:paddingTop="100dp"
+            android:paddingBottom="300dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/ic_launcher_foreground" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:letterSpacing="0.08"
+                android:padding="16dp"
+                android:text="Verify Mobile Number"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/login_student_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:focusedByDefault="true"
+                    android:gravity="center"
+                    android:hint="Enter your name"
+                    android:inputType="textPersonName"
+                    android:maxLength="40"
+                    android:paddingVertical="16dp"
+                    android:textColor="@color/deep_pink"
+                    android:textColorHint="@color/gray"
+                    tools:targetApi="o" />
+
+                <EditText
+                    android:id="@+id/login_student_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:focusedByDefault="true"
+                    android:gravity="center"
+                    android:hint="Enter your student id"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:paddingVertical="16dp"
+                    android:textColor="@color/deep_pink"
+                    android:textColorHint="@color/gray"
+                    tools:targetApi="o" />
+
+                <EditText
+                    android:id="@+id/login_otp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:focusedByDefault="true"
+                    android:gravity="center"
+                    android:hint="Enter otp"
+                    android:inputType="numberPassword"
+                    android:maxLength="6"
+                    android:paddingVertical="16dp"
+                    android:textColor="@color/deep_pink"
+                    android:textColorHint="@color/gray"
+                    tools:targetApi="o" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/login_next_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:text="Verify"
+                    android:textColor="@color/deep_pink" />
+
+                <ProgressBar
+                    android:id="@+id/login_progress_bar"
+                    android:layout_width="32dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="@color/deep_pink"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/change_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:letterSpacing="0.08"
+                    android:padding="16dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/resend_otp_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:padding="16dp"
+                android:visibility="visible" />
+        </LinearLayout>
+    </ScrollView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/adLayout"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical" />
+
+
+</RelativeLayout>
