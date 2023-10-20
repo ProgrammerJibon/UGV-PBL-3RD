@@ -74,7 +74,7 @@ if (isset($_POST['deleteItem'])) {
 }
 
 if (isset($_POST['removeDevice'])) {
-    if(@mysqli_query($connect, "UPDATE `students` SET `removed_time` = '$time', `status` = 'REMOVED' WHERE `students`.`id` = '".addslashes($_POST['removeDevice'])."'")){
+    if(@mysqli_query($connect, "UPDATE `students` SET `status` = 'BANNED' WHERE `students`.`id` = '".addslashes($_POST['removeDevice'])."'")){
         $result['removeDevice'] = true;
     }else{
         $result['removeDevice'] = false;
@@ -83,33 +83,38 @@ if (isset($_POST['removeDevice'])) {
 
 if (isset($uri[1]) && strtolower($uri[1]) == 'app') {
     $result['connectionResult'] = false;
-    $result['connectionUsername'] = "";
-    $result['student_id'] = '';
-    if (isset($_POST['student_id'], $_POST['student_code'])) {
-        $student_id = addslashes($_POST['student_id']);
-        $student_code = addslashes($_POST['student_code']);
-        $resultConnection = studentsList($student_id);
-        if (isset($resultConnection[0])) {
+    $result['student_name'] = "";
+    $student_id = "";
+    if (isset($_POST['student_phone'], $_POST['student_password'])) {
+        $student_phone = addslashes($_POST['student_phone']);
+        $student_password = addslashes(md5(sha1($_POST['student_password'])));
+        $studentId = isset($_POST['studentId'])?sanitizeInput($_POST['studentId'], "NUMBER_ONLY"):"";
+        $studentName = isset($_POST['studentName'])?sanitizeInput($_POST['studentName'], "TEXT_ONLY"):"";
+        if($studentId != "" && $studentName != ""){
+            @mysqli_query($connect, "INSERT INTO `students` (`id`, `student_id`, `student_phone`, `student_name`, `password`, `time`, `removed_time`, `status`) VALUES (NULL, '$studentId', '$student_phone', '$studentName', '$student_password', '$time', '0', 'VERIFIED')");
+        }
+        $resultConnection = studentsList($student_phone);
+        if (isset($resultConnection[0]['student_phone'])) {
             $resultConnection = $resultConnection[0];
-            if(isset($resultConnection['status']) && isset($resultConnection['check_code']) && preg_replace("/[^0-9]/", "", $resultConnection['check_code']) == $student_code){
-                $result['connectionUsername'] = $resultConnection['student_name'];
-                $result['student_id'] = $resultConnection['student_id'];
-                if ($resultConnection['status'] == "INACTIVE") {
-                    if (@mysqli_query($connect, "UPDATE `students` SET `time` = '$time', `status` = 'ACTIVE' WHERE `students`.`id` = '".$resultConnection['id']."'")) {
-                        $result['connectionResult'] = true;
-                    }
-                }elseif ($resultConnection['status'] == "ACTIVE") {
+            if(isset($resultConnection['status']) && $resultConnection['status'] == "VERIFIED"){
+                $result['student_name'] = $resultConnection['student_name'];
+                $student_id =  $resultConnection['id'];
+                if($resultConnection['password'] == $student_password){
                     $result['connectionResult'] = true;
                 }
+            }else if(isset($resultConnection['status']) && $resultConnection['status'] == "UNVERIFIED"){
+                $result['new_student'] = true;
             }
+        }else{
+            $result['new_student'] = true;
         }
     }
 
 
     if (isset($_POST["syncTable"])) {
         $result['book_table'] = false;
-        if ($result['student_id'] != "") {
-            $checkBackOrder = mysqli_query($connect, "SELECT * FROM `food_orders_list` WHERE `status` = 'OPEN' AND `student_id` = '$result[student_id]' LIMIT 1");
+        if ($student_id != "") {
+            $checkBackOrder = mysqli_query($connect, "SELECT * FROM `food_orders_list` WHERE `status` = 'OPEN' AND `student_id` = '$student_id' LIMIT 1");
             if (mysqli_num_rows($checkBackOrder) > 0){
                 foreach ($checkBackOrder as $key) {
                     $result['book_table'] = true;
@@ -122,8 +127,8 @@ if (isset($uri[1]) && strtolower($uri[1]) == 'app') {
 
     if(isset($_POST['book_table'])){
         $result['book_table'] = false;
-        if ($result['student_id'] != "") {
-            $checkBackOrder = mysqli_query($connect, "SELECT * FROM `food_orders_list` WHERE `status` = 'OPEN' AND `student_id` = '$result[student_id]' LIMIT 1");
+        if ($student_id != "") {
+            $checkBackOrder = mysqli_query($connect, "SELECT * FROM `food_orders_list` WHERE `status` = 'OPEN' AND `student_id` = '$student_id' LIMIT 1");
             if (mysqli_num_rows($checkBackOrder) > 0){
                 foreach ($checkBackOrder as $key) {
                     $result['book_table'] = true;
@@ -131,7 +136,7 @@ if (isset($uri[1]) && strtolower($uri[1]) == 'app') {
                     $result['order_id'] = $key['order_id'];
                 }
             }else{
-                if (@mysqli_query($connect, "INSERT INTO `food_orders_list` (`status`, `student_id`, `order_time`, `billed_time`, `paid_time`, `total_when_booked`) VALUES ('OPEN', '$result[student_id]', '$time', '0', '0', '0')")) {            
+                if (@mysqli_query($connect, "INSERT INTO `food_orders_list` (`status`, `student_id`, `order_time`, `billed_time`, `paid_time`, `total_when_booked`) VALUES ('OPEN', '$student_id', '$time', '0', '0', '0')")) {            
                     $result['book_table'] = true;
                     $result['time'] = date("Y/m/d h:iA", $time);
                     $result['order_id'] = @mysqli_insert_id($connect);
@@ -182,4 +187,5 @@ if (isset($uri[1]) && strtolower($uri[1]) == 'app') {
 }
 
 
+    $result['errnos'] = $_POST;
 echo json_encode($result);

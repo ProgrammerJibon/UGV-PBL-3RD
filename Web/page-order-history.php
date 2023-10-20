@@ -13,8 +13,8 @@ require_once('./html-header.php');
         <?php
             $student_list = studentsList();
             foreach ($student_list as $key) {
-                $selected = isset($_POST['student_id']) && ($_POST['student_id'] == $key['student_id']) ? "selected":"";
-                echo "<option $selected value='$key[student_id]'>$key[student_id] - $key[student_name]</option>";
+                $selected = isset($_POST['student_id']) && ($_POST['student_id'] == $key['id']) ? "selected":"";
+                echo "<option $selected value='$key[id]'>$key[student_id] - $key[student_name]</option>";
             }
         ?>
     </select>
@@ -22,7 +22,7 @@ require_once('./html-header.php');
 <?php
 $time_before = $time - (86400*1);
 $search = "(`order_time` BETWEEN '0' AND '$time_before') OR (`status` = 'CLOSED')";
-if(isset($_POST['student_id'])){
+if(isset($_POST['student_id']) && $_POST['student_id'] != ""){
     $ss = addslashes(strip_tags(strtolower($_POST['student_id'])));
     $search = "(`student_id` = '$ss')";
 }
@@ -31,9 +31,9 @@ $sql = "SELECT * FROM `food_orders_list` WHERE $search  ORDER BY `food_orders_li
 
 if ($query = @mysqli_query($connect, $sql)) {
     if(mysqli_num_rows($query) > 0){
-        echo isset($_POST['search'])?"<div class='pageTitle'>Search result for ".$_POST['search']."</div>": "<div class='pageTitle'>100 orders of before 24 hours</div>";
+        echo isset($_POST['student_id']) && $_POST['student_id'] != ""?"<div class='pageTitle'>Search result for ".$_POST['student_id']."</div>": "<div class='pageTitle'>100 orders of before 24 hours</div>";
     }
-    echo showOrdersContainer($query, isset($_POST['student']));
+    echo showOrdersContainer($query, isset($_POST['student_id']) && $_POST['student_id'] != "");
 }
 ?>
 

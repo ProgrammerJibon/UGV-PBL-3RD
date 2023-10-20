@@ -39,7 +39,7 @@ require_once('./html-header.php');
     form{text-align: center;margin: 32px;}
 </style>
 
-<form action="" method="POST">
+<!-- <form action="" method="POST">
     <div>
         <input type="text" style="width: 300px;padding: 8px" placeholder="Enter Student Name" name="student_name" minlength="0" required maxlength="64">
         <input type="text" style="width: 300px;padding: 8px" placeholder="Enter Student ID" pattern="([0-9]*)" name="student_id" minlength="0" required maxlength="64">
@@ -51,7 +51,7 @@ require_once('./html-header.php');
         <span>Current Server IP: </span>
         <span style="color: green; font-weight: bold;"><?php echo $localIP;?></span>
     </div>
-</form>
+</form> -->
 
 <table>
     <thead>
@@ -59,10 +59,9 @@ require_once('./html-header.php');
             <th>id</th>
             <th>Student Name</th>
             <th>Student Id</th>
-            <th>code</th>
-            <th>connected time</th>
-            <th>removed time</th>
-            <th>status</th>
+            <th>Student Phone</th>
+            <th>Time</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -82,7 +81,6 @@ loadLink('/json', [['studentsList','admin']]).then(result=>{
             const td5 = create("td");
             const td6 = create("td");
             const td7 = create("td");
-            const td8 = create("td");
             const del = create("span", "delbtn");
             tr.appendChild(td1);
             tr.appendChild(td2);
@@ -91,18 +89,16 @@ loadLink('/json', [['studentsList','admin']]).then(result=>{
             tr.appendChild(td5);
             tr.appendChild(td6);
             tr.appendChild(td7);
-            tr.appendChild(td8);
-            td8.appendChild(del);
+            td7.appendChild(del);
 
             td1.innerHTML = item.id;
             td2.innerHTML = item.student_name;
             td3.innerHTML = item.student_id;
-            td4.innerHTML = item.code;
+            td4.innerHTML = `+880${item.student_phone}`;
             td5.innerHTML = item.time;
-            td6.innerHTML = item.removed_time;
-            td7.innerHTML = item.status;
-            del.innerHTML = "Remove Access";
-            if(item.status == "ACTIVE"){
+            td6.innerHTML = item.status;
+            del.innerHTML = "BAN";
+            if(item.status == "VERIFIED"){
                 //td5.innerHTML = "";
             }else if (item.status == "INACTIVE"){
                 //td5.innerHTML = "";

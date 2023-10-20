@@ -195,6 +195,47 @@ function addDatabaseAndTables($connect){
 
 
 
+function sanitizeInput($input, string $preg = "") {
+    // TODO: TEXT_ONLY, SPACELESS_TEXT_ONLY, NUMBER_ONLY, TEXT_NUMBER, SPACELESS_TEXT_NUMBER
+    $input = stripslashes($input);
+    $input = htmlspecialchars($input);
+    $input = removeExtraSpaces($input);
+    $input = addslashes($input);
+    switch ($preg) {
+        case 'TEXT_ONLY':
+            $input = (string) preg_replace('/[^a-zA-Z\s]/', '', $input);
+            break;
+        case 'SPACELESS_TEXT_ONLY':
+            $input = (string) preg_replace('/[^a-zA-Z]/', '', $input);
+            break;
+        case 'NUMBER_ONLY':
+            $input = (int) preg_replace('/[^0-9]/', '', $input);
+            break;
+        case 'TEXT_NUMBER':
+            $input = (string) preg_replace('/[^a-zA-Z0-9\s]/', '', $input);
+            break;
+        case 'TEXT_WITH_PLUS_MINUS_SIGN':
+                $input = (string) preg_replace('/[^a-zA-Z0-9\s\+\-]/', '', $input);
+                break;
+        case 'SPACELESS_TEXT_NUMBER':
+            $input = (string) preg_replace('/[^a-zA-Z0-9]/', '', $input);
+            break;
+        default:
+            # code...
+            break;
+    }
+    return $input;
+}
+
+
+function sanitizeEmail($email) {
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    return $email;
+}
+
+
+
+
 
 function groupList($groupID = null){
 	$result = array();
@@ -230,18 +271,14 @@ function food_orders_item($order_id){
 	return $result;
 }
 
-function studentsList($student_id = null){
+function studentsList($student_phone = null){
 	$result = array();
 	global $connect;
-	 $sql = $student_id != null ?"SELECT * FROM `students` WHERE  `students`.`student_id` = '$student_id' ORDER BY `students`.`status` DESC LIMIT 1":"SELECT * FROM `students` ORDER BY `students`.`status` ASC";
+	 $sql = $student_phone != null ?"SELECT * FROM `students` WHERE  `students`.`student_phone` = '$student_phone' OR `students`.`id` = '$student_phone' ORDER BY `students`.`status` DESC LIMIT 1":"SELECT * FROM `students` ORDER BY `students`.`status` ASC";
 	$query = @mysqli_query($connect, $sql);
 	if($query){
 		foreach($query as $details){
-			$details['check_code'] = $student_id?$details['code']:null;
-			($details['status'] != "INACTIVE")?$details['code']=substr($details['code'], 0, 2)."••••".substr($details['code'], 6, 2):null;
-			//$details['code'] = substr($details['code'], 0, 4)." ".substr($details['code'], 4, 4).substr($details['code'], 8);
-			$details['time'] = ($details['time'] > 0 && ($details['status'] == 'ACTIVE' || $details['status'] == "REMOVED"))?date("Y/m/d h:iA", $details['time']):"Not Connected Yet";
-			$details['removed_time'] = $details['removed_time'] > 0?date("Y/m/d h:iA", $details['removed_time']):"N/A";
+			$details['time'] = date("Y/m/d h:iA", $details['time']);
 			$result[] = $details;
 		}
 	}else{
@@ -311,6 +348,7 @@ function showOrdersContainer($query, $wname = false){
         $echo .= "\n<div class='customer_name'><span class='name'>Student Name</span>:<span class='value'>$student[student_name]</span></div>";
 
         $echo .= "\n<div class='customer_phone'><span class='name'>Student ID</span>:<span class='value'>$student[student_id]</span></div>";
+        $echo .= "\n<div class='customer_phone'><span class='name'>Student Phone</span>:<span class='value'>+880$student[student_phone]</span></div>";
 
         $echo .= "\n<div class='order_time'><span class='name'>Open Time</span>:<span class='value'>$key[order_time]</span></div>";
 
