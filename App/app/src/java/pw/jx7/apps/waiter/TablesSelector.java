@@ -74,7 +74,7 @@ public class TablesSelector extends AppCompatActivity {
                 refreshLayout.setRefreshing(false);
                 progressCircular.setVisibility(View.GONE);
                 if (result.has("lists_table")) {
-                    userAdapter.updateData(result.getJSONArray("lists_table"), result.getString("connectionUsername"));
+                    userAdapter.updateData(result.getJSONArray("lists_table"), result.getString("student_name"));
                 }
             }catch (Exception error){
                 Log.e("errnos", error.getMessage());

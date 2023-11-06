@@ -53,6 +53,7 @@ import pw.jx7.apps.waiter.R;
 
 public class CustomTools {
     public static final String TITLE = "UGV Cafe";
+//    public static String URL = "http://10.1.0.10";
     public static String URL = "https://ugv-pbl-3.jibon.pro";
     public static String TAG = "errnos";
     protected SharedPreferences preferences;

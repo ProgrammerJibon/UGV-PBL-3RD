@@ -25,7 +25,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     protected JSONArray userList;
     protected Activity activity;
-    protected String connectionUsername;
+    protected String student_name;
 
     public UserAdapter(Activity activity, JSONArray userList) {
         this.userList = userList;
@@ -33,9 +33,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void updateData(JSONArray newData, String connectionUsername) {
+    public void updateData(JSONArray newData, String student_name) {
         this.userList = newData;
-        this.connectionUsername = connectionUsername;
+        this.student_name = student_name;
         this.notifyDataSetChanged();
     }
 
@@ -62,7 +62,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 try {
                     intent.putExtra("tableID", user.getString("table_id"));
                     intent.putExtra("tableName", user.getString("table_name"));
-                    intent.putExtra("connectionUsername", connectionUsername);
+                    intent.putExtra("student_name", student_name);
                     if (user.has("current_status")){
                         JSONObject current_status = user.getJSONObject("current_status");
                         intent.putExtra("vat", current_status.getString("vat"));

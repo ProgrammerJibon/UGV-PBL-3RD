@@ -1,5 +1,7 @@
 package pw.jx7.apps.waiter;
 
+import static pw.jx7.apps.waiter.tools.CustomTools.logE;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -77,6 +79,7 @@ public class SignupActivity extends AppCompatActivity {
 
         phoneNumber = "+880" + customTools.getPref("student_phone");
 
+
         change_phone_number.setText(Html.fromHtml("Your number: "+phoneNumber));
 
         if (!customTools.getPref("otp_send" + phoneNumber).equalsIgnoreCase("1")) {
@@ -111,7 +114,7 @@ public class SignupActivity extends AppCompatActivity {
         });
 
         //ads area
-        MobileAds.initialize(this, initializationStatus -> {});
+        /*MobileAds.initialize(this, initializationStatus -> {});
         LinearLayout adLayout = activity.findViewById(R.id.adLayout);
         AdView mAdView = new AdView(this);
         if (( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) )){
@@ -122,7 +125,7 @@ public class SignupActivity extends AppCompatActivity {
         mAdView.setAdSize(AdSize.SMART_BANNER);
         adLayout.addView(mAdView);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        mAdView.loadAd(adRequest);*/
     }
     void sendOtp(String phoneNumber) {
         setInProgress(true);
@@ -130,7 +133,7 @@ public class SignupActivity extends AppCompatActivity {
                 PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber(phoneNumber)
                         .setTimeout(timeoutSeconds, TimeUnit.SECONDS)
-                        .setActivity(this)
+                        .setActivity(activity)
                         .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
                             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
@@ -143,6 +146,7 @@ public class SignupActivity extends AppCompatActivity {
                                 Toast.makeText(activity, "OTP verification failed", Toast.LENGTH_LONG).show();
                                 setInProgress(false);
                                 resendOtpTextView.setText("Send OTP");
+                                customTools.alert("Error", e.getMessage());
                             }
 
                             @Override
@@ -193,7 +197,6 @@ public class SignupActivity extends AppCompatActivity {
                 customTools.toast("OTP verification failed");
             }
         });
-
 
     }
 

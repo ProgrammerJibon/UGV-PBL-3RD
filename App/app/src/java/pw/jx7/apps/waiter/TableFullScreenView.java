@@ -32,7 +32,7 @@ public class TableFullScreenView extends AppCompatActivity {
     public Activity activity;
     public Button openTableButton, closeTableButton, addItemTableButton, printItemsButton;
     public EditText customerName, customerPhone;
-    public String ipAddress = "127.0.0.1", connectorCode = "0", connectionUsername = "";
+    public String ipAddress = "127.0.0.1", connectorCode = "0", student_name = "";
     protected String table_name, table_id, order_id, customer_name, customer_phone, order_taker_name, order_status, order_time, orderTaxPercent;
     protected TextView pageTitle, orderIDTextShow, bookingTime, customerNameTextView, customerPhoneTextView, servedByTextView, itemOnlyTotal, totalVat, orderTaxPercentage, inTotalPrice;
     private CustomTools customTools;
@@ -103,7 +103,7 @@ public class TableFullScreenView extends AppCompatActivity {
                     order_status = bundle.getString("order_status");
                     order_time = bundle.getString("order_time");
                     orderTaxPercent = bundle.getString("vat");
-                    connectionUsername = bundle.getString("connectionUsername");
+                    student_name = bundle.getString("student_name");
 
                     orderIDTextShow.setText("Booking ID: " + order_id);
                     bookingTime.setText("Sit Time: " + order_time);
@@ -112,7 +112,7 @@ public class TableFullScreenView extends AppCompatActivity {
                     servedByTextView.setText("Served by: " + order_taker_name);
                     orderTaxPercentage.setText(orderTaxPercent + "%");
 
-                    if (!connectionUsername.equalsIgnoreCase(order_taker_name)) {
+                    if (!student_name.equalsIgnoreCase(order_taker_name)) {
                         addItemTableButton.setVisibility(View.GONE);
                         closeTableButton.setVisibility(View.GONE);
                     }
@@ -142,7 +142,7 @@ public class TableFullScreenView extends AppCompatActivity {
                 if (result.has("book_table")) {
                     if (result.getBoolean("book_table")){
                         order_id = result.getString("order_id");
-                        order_taker_name = result.getString("connectionUsername");
+                        order_taker_name = result.getString("student_name");
                         order_time = result.getString("time");
                         orderTaxPercent = result.getString("vat");
 

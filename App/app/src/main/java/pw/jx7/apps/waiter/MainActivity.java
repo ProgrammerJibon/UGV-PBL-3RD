@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsIntent;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Uri uri = Uri.parse("https://www.google.com");
+        new CustomTabsIntent.Builder().build().launchUrl(activity, uri);
 
         str_student_password = customTools.setPref("student_password", null);
         str_student_phone = customTools.setPref("student_phone", null);

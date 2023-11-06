@@ -109,7 +109,7 @@ public class MainActivity2 extends AppCompatActivity {
                             if (!String.valueOf(connectorCode.getText()).equals("")){
                                 customTools.setPref("connectorCode", String.valueOf(connectorCode.getText()));
                             }
-                            customTools.toast("Welcome back "+(result.has("connectionUsername")?result.getString("connectionUsername"):"!"));
+                            customTools.toast("Welcome back "+(result.has("student_name")?result.getString("student_name"):"!"));
                             Intent intent = new Intent(activity, TablesSelector.class);
                             activity.startActivity(intent);
                             activity.finish();

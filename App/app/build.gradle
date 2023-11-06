@@ -1,15 +1,24 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
 }
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('E:\\Project Archive\\Android Studio\\all_keys.jks')
+            storePassword 'fahima'
+            keyAlias 'key0'
+            keyPassword 'fahima'
+        }
+    }
     namespace 'pw.jx7.apps.waiter'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "pw.jx7.apps.waiter"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 3
         versionName "1.5"
 
@@ -20,6 +29,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -30,10 +40,16 @@ android {
 
 dependencies {
     api files('libs/GCPRN.jar')
+    implementation (platform("com.google.firebase:firebase-bom:32.5.0"))
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'com.google.android.gms:play-services-ads-lite:22.5.0'
+    implementation 'com.google.firebase:firebase-messaging:23.3.1'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.android.play:integrity:1.2.0'
+    implementation 'androidx.browser:browser:1.2.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                             connectorCode.clearFocus();
                             connectorCode.setText("");
                             progressCircular.setVisibility(View.VISIBLE);
-                            customTools.toast("Welcome back "+(result.has("connectionUsername")?result.getString("connectionUsername"):"!"));
+                            customTools.toast("Welcome back "+(result.has("student_name")?result.getString("student_name"):"!"));
                             new Timer().schedule(new TimerTask() {
                                 @Override
                                 public void run() {

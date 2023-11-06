@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "499580078451",
+    "project_id": "ugv-pbl-3",
+    "storage_bucket": "ugv-pbl-3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499580078451:android:3632a3f86bd443420b5d06",
+        "android_client_info": {
+          "package_name": "pw.jx7.apps.waiter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO2mSM5zgLmeZbSQ7d8tkPhZ_NNjldbUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
